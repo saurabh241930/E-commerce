@@ -1,0 +1,217 @@
+
+  <title>T-shirt store</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link href="https://fonts.googleapis.com/css?family=Nunito:900" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+
+
+<div style="" class="row">
+  <div style="text-align:center;height:100px;background-color:black;" class="col col-lg-6 col-sm-12 col-xs-12">
+    
+    <p style="margin-top:30px;
+              color:white;
+              font-family: 'Nunito', sans-serif;
+              "><span style="font-size:25px;">Plain Black(42)</span></p> 
+  </div>
+  
+    <div style="text-align:center;height:100px;background-color:#bcbcbc;" class="col col-lg-6 col-sm-12 col-xs-12">
+    
+    <p style="margin-top:30px;
+              color:black;
+              font-family: 'Nunito', sans-serif;
+              "><span style="font-size:25px;">Price : <%=product.Price%> </span></p> 
+  </div>
+   
+
+</div>
+
+
+
+<div class="row">
+  
+  <div class="col col-lg-6 col-sm-12 col-xs-12">
+    
+    <div class="row">
+      <div class="col col-lg-2 col-sm-2 col-xs-0"></div>
+      
+      <div style="height:400px;" class="col col-lg-8 col-sm-8 col-xs-12">
+         <img  style="height:380px;width:100%;" src="<%=product.ImageMain%>" alt="">
+      </div>
+       <div class="col col-lg-2 col-sm-2 col-xs-0"></div>
+      
+      
+      
+        <div  style="height:210px;text-align:center;" class="col col-lg-6 col-sm-6 col-xs-6">
+         <img  style="height:200px;width:200px;" src="<%=product.SideImage%>" alt="">
+      </div>
+      
+       <div  style="height:210px;text-align:center;" class="col col-lg-6 col-sm-6 col-xs-6">
+         <img style="height:200px;width:200px;" src="<%=product.BackImage%>" alt="">
+      </div>
+      
+    </div>
+    
+  
+  </div>
+  
+  
+  
+  <div class="container">
+  
+  <div class="row">
+  
+  <div style=" font-family: 'Nunito', sans-serif;" class="col col-lg-6 col-sm-12 col-xs-12">
+    
+
+     
+    
+    
+    
+    
+    
+    
+    <form  action = '/buy/<%=product._id%>/order' method = "post">  
+    <div style="margin-top:50px;" class="form-group">
+      
+      
+      <div class="container">
+        
+         <label>Choose size</abel>
+        <textarea spellcheck="false" id="SizeField" class="form-control"  style="text-align:center;
+                                                              font-size:30px;
+                                                              background-color:white;
+                       " name = 'Size' rows="1" readonly></textarea><br>
+      
+      <div  style="text-align:center" class="row">
+      <div style="" class="col col-lg-3 col-6-sm col-xs-3">
+        <span id="size1" style="border:solid 1px #bcbcbc;
+                     padding:5px 15px 5px 15px;
+                     border-radius:17px">L</span>
+      </div>
+      <div class="col col-lg-3 col-6-sm col-xs-3">
+       <span id="size2"style="border:solid 1px #bcbcbc;
+                     padding:5px 15px 5px 15px;
+                     border-radius:17px">XL</span>
+      </div>
+      <div class="col col-lg-3 col-6-sm col-xs-3">
+      <span  id="size3"style="border:solid 1px #bcbcbc;
+                     padding:5px 15px 5px 15px;
+                     border-radius:17px">XXL</span>
+      </div>
+      <div class="col col-lg-3 col-6-sm col-xs-3">
+       <span id="size4" style="border:solid 1px #bcbcbc;
+                     padding:5px 15px 5px 15px;
+                     border-radius:17px">XXXL</span>
+      </div>
+    </div>
+      
+         <input  spellcheck="false"
+                style="margin-top:20px;
+                text-align:center;" 
+        class="form-control" type = 'number' name = 'AreaPinCode' placeholder = 'Area Pincode' required>
+        
+          <textarea  spellcheck="false"
+                    style="margin-top:20px;" 
+        class="form-control" type = 'text' name = 'ShippingAddress' placeholder = 'Shipping address' rows="4" required></textarea>
+        
+        <input  spellcheck="false"
+               style="margin-top:20px;
+                text-align:center;" 
+        class="form-control" type = 'text' name = 'UserFullName' placeholder = 'Your full name' required>
+        
+         <input  spellcheck="false"
+                style="margin-top:20px;
+                text-align:center;" 
+        class="form-control" type = 'number' name = 'UserPhoneNo' placeholder = 'Mobile No.' required>
+        
+        
+              <button style="background-color:black;
+                  color:white;
+                  width:100%;
+                  border:solid 2px black;
+                  margin-top:20px;
+                  height:40px;" >Place order</button>
+        
+        
+        
+      </div>
+      
+     
+      
+      
+
+      
+
+    
+   
+
+      </div>
+      
+    
+</form>
+    
+  
+  </div>
+  
+</div>
+  
+    <style>
+      .Selected{
+        background-color:black;
+        color:white; 
+      }
+    </style>
+    
+  
+  <script>
+    
+    $("#size1").click(function(){
+       $("#SizeField").text("L");
+       $("#size1").addClass('Selected');
+       $("#size2").removeClass('Selected');
+       $("#size3").removeClass('Selected');
+       $("#size4").removeClass('Selected');
+       
+    })
+    
+      $("#size2").click(function(){
+       $("#size2").addClass('Selected');
+       $("#size1").removeClass('Selected');
+       $("#size3").removeClass('Selected');
+       $("#size4").removeClass('Selected');
+       $("#SizeField").text("XL");
+    })
+    
+      $("#size3").click(function(){
+       $("#size3").addClass('Selected');
+       $("#size2").removeClass('Selected');
+       $("#size1").removeClass('Selected');
+       $("#size4").removeClass('Selected');
+       $("#SizeField").text("XXL");
+    })
+    
+      $("#size4").click(function(){
+       $("#size4").addClass('Selected');
+       $("#size2").removeClass('Selected');
+       $("#size3").removeClass('Selected');
+       $("#size1").removeClass('Selected');
+       $("#SizeField").text("XXXL");
+    })
+    
+    
+    
+  </script>
+  
+  
+  
+
+  
+  
+  
+  
+</div>
