@@ -46,7 +46,7 @@
  <%}%>
   
 
-<nav class="navbar fixed-top navbar-inverse">
+<nav style="background-color:black;" class="navbar fixed-top navbar-inverse">
   <div class="container-fluid">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
@@ -58,25 +58,25 @@
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="#">Home</a></li>
-        <li><a href="#">Products</a></li>
-        <li><a href="#">Deals</a></li>
-        <li><a href="#">Stores</a></li>
-        <li><a href="#">Contact</a></li>
+        <li class="active"><a  id="navLinks" href="#">Home</a></li>
+        <li><a  id="navLinks" href="#">Products</a></li>
+        <li><a id="navLinks" href="#">Deals</a></li>
+        <li><a id="navLinks" href="#">Stores</a></li>
+        <li><a id="navLinks" href="#">Contact</a></li>
       </ul>
       <ul class="nav navbar-nav navbar-right">
         
       
         
-        <li><a href="/register"><span class="glyphicon glyphicon-user"></span>  
+        <li><a id="navLinks" href="/register"><span class="glyphicon glyphicon-user"></span>  
           <%if(!currentUser){%>Sign Up</a></li>
-         <li><a href="/login"><span class="glyphicon glyphicon-user"></span>  
+         <li><a id="navLinks" href="/login"><span class="glyphicon glyphicon-user"></span>  
              Login</a></li>
            <%}else{%>
         <%=currentUser.username%>
-       <li><a href="logout"><span class="glyphicon glyphicon-user"></span>Logout</a></li>
-         <li><a href="/myOrders"><span class="glyphicon glyphicon-shopping-cart"></span>My Orders</a></li>
-        <li><a href="#"><span class="glyphicon glyphicon-shopping-cart"></span> Cart</a></li>
+       <li><a id="navLinks" href="logout"><span class="glyphicon glyphicon-user"></span>Logout</a></li>
+         <li><a id="navLinks" href="/myOrders"><span class="glyphicon glyphicon-shopping-cart"></span> My Orders (<%=currentUser.Orders.length%>)</a></li>
+        <li><a id="navLinks" href="/cart"><span class="glyphicon glyphicon-shopping-cart"></span> Cart (<%=currentUser.ProductInCart.length%>)</a></li>
         <%}%>
         
       </ul>
@@ -85,6 +85,13 @@
 </nav>
   
   
+  <style>
+    #navLinks:hover{
+      color:white;
+      background-color:black;
+      
+    }
+  </style>
   
   
   <!--  Carousel  -->
@@ -145,7 +152,7 @@
 <div>    
   <div class="row">
     <%products.forEach(function(product){%>
-  <div style="border:solid 1px #c6c6c6;"class="col-lg-3 col-sm-4 col-xs-6"> 
+  <div style=""class="col-lg-4 col-sm-4 col-xs-6"> 
    <p style="text-align:center;
               
              font-family: 'Raleway', sans-serif;
@@ -164,10 +171,15 @@
                                  border-left:solid 20px white;
                                  height:40px;"
                    class="col col-lg-6 col-xs-12"> 
-   <div style="margin-top:10px;"><a style="background-color:#bcbcbc;
-                   
-                   color:black;"><i id="Add2cartIcon" style="font-size:17px" class="fa fa-cart-plus" aria-hidden="true">
-     </i> Add to Cart</button></div></div>
+   <div style="margin-top:10px;">
+     <form action="/AddToCart/<%=product._id%>" method="post">
+       <button style="background-color:#bcbcbc;color:black;border:solid 1px #bcbcbc ;">
+          <i id="Add2cartIcon" style="font-size:17px" class="fa fa-cart-plus" aria-hidden="true">
+     </i>
+         Add To Cart</button>
+     </form>
+     
+      </div></div>
       <div style="background-color:black;
                   margin-top:10px;margin-bottom:10px;
                   border-right:solid 20px white;
@@ -191,12 +203,9 @@
 
 <br><br>
 
-<footer class="container-fluid text-center">
-  <p>Online Store Copyright</p>  
-  <form class="form-inline">Get deals:
-    <input type="email" class="form-control" size="50" placeholder="Email Address">
-    <button type="button" class="btn btn-danger">Sign Up</button>
-  </form>
+<footer style="background-color:black" class="container-fluid text-center">
+  
+ 
 </footer>
 
  

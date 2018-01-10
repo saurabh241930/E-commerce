@@ -24,6 +24,7 @@ var  methodOverride = require('method-override'),
 //       complexRoutes = require('./routes/complex');
        
   var  authRoutes = require('./routes/index');
+  var  adminRoutes = require('./routes/adminRoutes');
 
 
 
@@ -91,6 +92,7 @@ app.use(function(req,res,next){
 
 
  app.use(authRoutes);
+ app.use(adminRoutes);
 // app.use(commentRoutes);
 // app.use(blogsRoutes);
 // app.use(subsRoutes);

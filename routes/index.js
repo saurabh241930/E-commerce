@@ -23,79 +23,105 @@ router.get('/',function(req,res){
 });
 
 
-router.get('/addProduct',function(req,res){
-  res.render('AddProduct');
-});
-
-router.get('/orders',function(req,res){
-    Order.find({},function(err,orders){
-    if (err) {
-      console.log(err);
-    } else {
-      res.render('orders',{orders:orders});
-    }
-  })
-  
-});
-
-
-router.post('/addProduct',function(req,res){
- 
-  var Title = req.body.Title;
-  var Price = req.body.Price;
-  var Description = req.body.Description;
-  var ImageMain = req.body.ImageMain;
-  var SideImage = req.body.SideImage;
-  var BackImage = req.body.BackImage;
-
-  
-  
-  var newProduct = {
-    Title:Title,
-    Price:Price,
-    Description:Description,
-    ImageMain:ImageMain,
-    SideImage:SideImage,
-    BackImage:BackImage
-  }
-  
-  
-  Product.create(newProduct,function(err,createdProduct){
-    if (err) {
-      console.log(err);
-    } else {
-      
-   Product.find({},function(err,products){
-    if (err) {
-      console.log(err);
-    } else {
-      res.render('index',{products:products});
-    }
-  })
-    }
-  })
-  
-  
-  
-});
 
 
 
 
-router.get('/buy/:id',function(req,res){
+
+
+
+
+
+
+router.get('/buy/:id',isLoggedIn,function(req,res){
   
   Product.findById(req.params.id,function(err,product){
     if (err) {
       console.log(err);
     } else {
+      
+  
+      
        res.render('show',{product:product});
     }
   })
 });
 
 
+router.post('/AddToCart/:id',isLoggedIn,function(req,res){ 
+ User.findById(req.user._id,function(err,user){
+    if (err) {
+      console.log(err);
+    } else {
+      
+      Product.findById(req.params.id,function(req,product){
+        if (err) {
+          console.log(err);
+        } else {
+          
+            var OrderInfo = {
+              id:product._id,
+              ProductImage:product.ImageMain,
+              Title:product.Title,
+              Price:product.Price
+            }
+          
+          user.ProductInCart.push(OrderInfo);
+          user.save();
+          res.redirect("back");
+            
+        }
+         
+      })
+      
+      
+    }
+  })
+});
 
 
+
+router.get('/cart',isLoggedIn,function(req,res){
+  
+  User.findById(req.user._id,function(err,user){
+    if (err) {
+      console.log(err);
+    } else {
+      
+var priceListArray = user.ProductInCart.map(function(order){
+  return order.Price;
+});
+      
+var TotalAmountOfCart = priceListArray.reduce(function(a, b) { return a + b; }, 0);
+        res.render('cart',{user:user,TotalAmountOfCart:TotalAmountOfCart});
+    }
+  })
+});
+
+
+router.delete('/cart/remove/:ordername/:id',isLoggedIn,function(req,res){
+  
+ var ProductId = req.params.id;
+ var OrderName = req.params.ordername; 
+  
+  
+User.update({_id:req.user._id})  
+  
+  
+  
+  
+// User.findById(req.user._id,function(err,user){
+// if (err) {
+// throw err;
+// } else {  
+//  if (user.ProductInCart && user.ProductInCart[OrderName]) {
+//    user.ProductInCart[OrderName].splice(ProductId,1);
+//    user.save();
+// }
+//   res.redirect("back");
+// }
+// })       
+})
 
 
 router.post('/buy/:id/order',isLoggedIn,function(req,res){
@@ -114,17 +140,21 @@ router.post('/buy/:id/order',isLoggedIn,function(req,res){
           var Title = product.Title;
           var Price = product.Price;
           var Image = product.ImageMain;
+          var ProductID = product._id;
           var AreaPincode = req.body.AreaPincode;
           var ShippingAddress = req.body.ShippingAddress;
           var UserFullName = req.body.UserFullName;
           var UserPhoneNo = req.body.UserPhoneNo;
           var BuyedByTheUser = req.user.username;
+          var Quantity = req.body.Quantity;
           
     
           var newOrder = {
             Title:Title,
             Price:Price,
             Image:Image,
+            Quantity:Quantity,
+            ProductID:ProductID,
             AreaPincode:AreaPincode,
             ShippingAddress:ShippingAddress,
             UserFullName:UserFullName,
@@ -149,6 +179,7 @@ router.post('/buy/:id/order',isLoggedIn,function(req,res){
               ProductImage:createdOrder.Image,
               PlacedOn:createdOrder.OrderPlacedOn,
               Price:createdOrder.Price,
+              Quantity:createdOrder.Quantity
             }
             
             user.Orders.push(OrderInfo);
@@ -184,29 +215,42 @@ router.get('/myOrders',function(req,res){
         res.render('myOrders',{user:user});
     }
   })
-  
-  
-  
-
 });
 
 //////////////////MY ORDERS////////////
 
 
-
-
-
-
-
-
-
-router.get('/AdminPortal',function(req,res){
-  if (req.user.username.toString() === "Admin" ) {
-      res.render('adminPage');
-  } else {
-    res.render("login")
-  }
+router.get('/order/:id',function(req,res){
+  Order.findById(req.params.id,function(err,order){
+    if (err) {
+      console.log(err);
+    } else {
+      res.render('order',{order:order});
+    }
+  })
+  
+  
 });
+
+
+
+router.delete('/order/cancel/:id',function(req,res){
+  Order.findByIdAndRemove(req.params.id,function(err,DeletedOrder){
+    if (err) {
+      console.log(err);
+    } else {
+      res.redirect("back");
+    }
+  })
+  
+  
+});
+
+
+
+
+
+
 
 
 

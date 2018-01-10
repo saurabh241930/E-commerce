@@ -18,7 +18,8 @@ ref : "Order"
 ProductImage:String,
 OrderName:String,
 PlacedOn:Date,
-Price:String
+Price:Number,
+Quantity:{type:Number,default:0},
 }],
 
 
@@ -27,8 +28,14 @@ id:{
 type : mongoose.Schema.Types.ObjectId,
 ref : "Product"
 },
+ProductImage:String,
 Title: String,
-}]   
+Price:Number
+}]
+  
+  
+  
+  
 });
 
 
