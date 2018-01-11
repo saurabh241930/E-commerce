@@ -40,8 +40,9 @@
     
     <div class="col col-lg-3 col-sm-12 col-xs-12">
       <p><span style=" font-family: 'Raleway', sans-serif;
-                    font-size:25px;"><%=order.OrderName%></span> X <span style="background-color:black;font-family: 'Nunito', sans-serif;
-                                                                                color:white;padding:5px;"><%=order.Quantity%></span> <br>
+                    font-size:25px;"><%=order.OrderName%>
+        </span> X <span style="background-color:black;font-family: 'Nunito', sans-serif;
+                              color:white;padding:5px;"><%=order.Quantity%></span> <br>
         <span style=" font-family: 'Nunito', sans-serif;
                      font-size:35px;"><%=order.Price%></span><br><br>
         <span style="font-family: 'Nunito', sans-serif; font-size:15px;">Order ID :</span> 
@@ -56,11 +57,36 @@
       <p><span style="font-family: 'Raleway', sans-serif;font-size:15px;">Order placed On :</span><br>
         <span style="font-family: 'Nunito', sans-serif;
                     font-size:15px;"><%=order.PlacedOn.toDateString()%></span><br><br><br><br>
+        
+        
+        
+        <p style="margin-bottom:-10px;font-family: 'Nunito', sans-serif;color:red">Cancelled</p>
+  
+        
+       <%orders.some(function(EachOrder){%>
+        
+        <%if(EachOrder._id.toString() !== order.id.toString()){%>
+        
+       
+        
+         <%}else{%> 
         <a href="/order/<%=order.id%>"  style="font-family: 'Nunito', sans-serif;
                     font-size:14px;
                     background-color:black;
                     padding:15px;
                     color:white;"><i style="font-size:20px;" class="fa fa-file-text" aria-hidden="true"></i>  See more </a>
+        
+        <%}%>
+        <%})%>
+        
+        
+        
+        
+        
+        
+        
+        
+        
         
 
         

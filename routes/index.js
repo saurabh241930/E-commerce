@@ -100,27 +100,15 @@ var TotalAmountOfCart = priceListArray.reduce(function(a, b) { return a + b; }, 
 
 
 router.delete('/cart/remove/:ordername/:id',isLoggedIn,function(req,res){
-  
- var ProductId = req.params.id;
- var OrderName = req.params.ordername; 
-  
-  
-User.update({_id:req.user._id})  
-  
-  
-  
-  
-// User.findById(req.user._id,function(err,user){
-// if (err) {
-// throw err;
-// } else {  
-//  if (user.ProductInCart && user.ProductInCart[OrderName]) {
-//    user.ProductInCart[OrderName].splice(ProductId,1);
-//    user.save();
-// }
-//   res.redirect("back");
-// }
-// })       
+   
+User.update({_id:req.user._id},{ $pull:{ProductInCart:{_id:req.params.id}}},function(err,deleted){
+  if (err) {
+    console.log(err)
+  } else {
+    res.redirect("back");
+  }
+})  
+      
 })
 
 
@@ -141,6 +129,7 @@ router.post('/buy/:id/order',isLoggedIn,function(req,res){
           var Price = product.Price;
           var Image = product.ImageMain;
           var ProductID = product._id;
+          var Size = req.body.Size;
           var AreaPincode = req.body.AreaPincode;
           var ShippingAddress = req.body.ShippingAddress;
           var UserFullName = req.body.UserFullName;
@@ -153,6 +142,7 @@ router.post('/buy/:id/order',isLoggedIn,function(req,res){
             Title:Title,
             Price:Price,
             Image:Image,
+            Size:Size,
             Quantity:Quantity,
             ProductID:ProductID,
             AreaPincode:AreaPincode,
@@ -189,7 +179,7 @@ router.post('/buy/:id/order',isLoggedIn,function(req,res){
     if (err) {
       console.log(err);
     } else {
-      res.render('index',{products:products});
+      res.redirect("/");
     }
   })       
           }
@@ -205,19 +195,32 @@ router.post('/buy/:id/order',isLoggedIn,function(req,res){
 
 
 
-//////////////////MY ORDERS////////////
+//////////////////MY ORDERS////////////1
 router.get('/myOrders',function(req,res){
   
   User.findById(req.user._id,function(err,user){
     if (err) {
       console.log(err);
     } else {
-        res.render('myOrders',{user:user});
+      
+          Order.find({},function(err,orders){
+    if (err) {
+      console.log(err);
+    } else {
+      
+    res.render('myOrders',{user:user,orders:orders});
+    }
+  })
+      
+      
+      
+      
+//         res.render('myOrders',{user:user});
     }
   })
 });
 
-//////////////////MY ORDERS////////////
+//////////////////MY ORDERS////////////o
 
 
 router.get('/order/:id',function(req,res){
@@ -235,11 +238,12 @@ router.get('/order/:id',function(req,res){
 
 
 router.delete('/order/cancel/:id',function(req,res){
-  Order.findByIdAndRemove(req.params.id,function(err,DeletedOrder){
+  Order.findByIdAndRemove(req.params.id,function(err,deletedOrder){
     if (err) {
       console.log(err);
     } else {
-      res.redirect("back");
+    res.redirect("/myOrders");
+     
     }
   })
   
